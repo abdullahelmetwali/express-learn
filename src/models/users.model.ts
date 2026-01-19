@@ -1,7 +1,7 @@
+import { makeSlug } from "@/utils/make-slug";
 import { Schema, model } from "mongoose";
-import slugify from "slugify";
 
-const USER_SCHEME = new Schema({
+const USER_SCHEMA = new Schema({
     slug: {
         type: String,
         unique: true,
@@ -37,47 +37,12 @@ const USER_SCHEME = new Schema({
     }
 }, {
     timestamps: true,
-    methods: {
-        getEmail(email) {
-            this.email = email
-        }
-    }
 });
 
-USER_SCHEME.pre("save", async function () {
-    if (this.isNew || this.isModified("name")) {
-        try {
-            const slugOptions = {
-                lower: true,
-                strict: true,
-                trim: true,
-                locale: "en"
-            };
-
-            let slug = slugify(this.name, slugOptions);
-
-            let isSlugExists = await USERS_MODEL.findOne({ slug });
-            let counter = 1;
-
-            // if slug exists make this loop
-            while (isSlugExists) {
-                slug = `${slugify(this.name, slugOptions)}-${counter}`;
-                isSlugExists = await USERS_MODEL.findOne({ slug });
-                counter++;
-            };
-
-            this.slug = slug;
-        } catch (error) {
-        }
-    }
+USER_SCHEMA.pre("save", async function () {
+    if (!this.isNew && !this.isModified("name")) return;
+    this.slug = await makeSlug(this.name, this.constructor);
 });
-interface UserTypo {
-    slug: string;
-    name: string;
-    email: string;
-    password: string;
-    gender: "male" | "female";
-};
 
-const USERS_MODEL = model("User", USER_SCHEME);
-export { USERS_MODEL, type UserTypo };
+
+export const USERS_MODEL = model("Users", USER_SCHEMA);

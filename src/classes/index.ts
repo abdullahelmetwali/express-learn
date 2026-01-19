@@ -10,4 +10,4 @@ export class CustomValidationError {
         this.statusCode = statusCode;
         this.errors = errors;
     }
-}
+};

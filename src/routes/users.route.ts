@@ -6,7 +6,7 @@ const USERS_ROUTE = Router();
 // GET all users => /users
 // GET user bg id => /users/:id
 
-USERS_ROUTE.get("/", async (req, res) => {
+USERS_ROUTE.get("/", async (_, res) => {
     try {
         // .lean() -> plain JS objects
         const users = await USERS_MODEL.find({}, { password: 0 }).lean();
