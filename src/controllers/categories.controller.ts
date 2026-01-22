@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 
-import { CustomValidationError } from "@/classes";
-import { CATEGORIES_MODEL } from "@/models/categories.model";
-import { softDeleteUtility } from "@/utils/soft-delete";
-import { hardDeleteUtility } from "@/utils/hard-delete";
-import { restoreUtility } from "@/utils/restore";
+import { CustomValidationError } from "../classes";
+import { CATEGORIES_MODEL } from "../models/categories.model";
+import { softDeleteUtility } from "../utils/soft-delete";
+import { hardDeleteUtility } from "../utils/hard-delete";
+import { restoreUtility } from "../utils/restore";
 
 export const createCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {

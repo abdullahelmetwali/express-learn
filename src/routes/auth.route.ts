@@ -1,6 +1,6 @@
 // auth.route is for making the routes frontend fetch on it
 import { Router } from "express";
-import { signIn, signOut, signUp } from "@/controllers/auth.controller";
+import { signIn, signOut, signUp } from "../controllers/auth.controller";
 
 const AUTH_ROUTE = Router();
 

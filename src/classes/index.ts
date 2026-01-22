@@ -1,4 +1,4 @@
-import { ValidationErrors } from "@/types";
+import { ValidationErrors } from "../types";
 
 export class CustomValidationError {
     name: string = "CustomValidationError";

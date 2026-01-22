@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 
-import { CustomValidationError } from "@/classes";
-import { SIZES_MODEL } from "@/models/sizes.model";
+import { CustomValidationError } from "../classes";
+import { SIZES_MODEL } from "../models/sizes.model";
 
-import { softDeleteUtility } from "@/utils/soft-delete";
-import { hardDeleteUtility } from "@/utils/hard-delete";
-import { restoreUtility } from "@/utils/restore";
+import { softDeleteUtility } from "../utils/soft-delete";
+import { hardDeleteUtility } from "../utils/hard-delete";
+import { restoreUtility } from "../utils/restore";
 
 export const createSize = async (req: Request, res: Response, next: NextFunction) => {
     try {

@@ -1,4 +1,4 @@
-import { ValidationErrors } from "@/types";
+import { ValidationErrors } from "../types";
 import { Request, Response, NextFunction } from "express";
 
 export function ERROR_MIDDLEWARE(

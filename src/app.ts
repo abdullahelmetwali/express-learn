@@ -1,21 +1,20 @@
-import 'tsconfig-paths/register';
 import "./config/env";
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-import { PORT } from "@/config/env";
-import { CONNECT_TO_DATA_BASE } from "@/db/mongodb";
-import { ERROR_MIDDLEWARE } from "@/middlewares/error.middleware";
+import { PORT } from "./config/env";
+import { CONNECT_TO_DATA_BASE } from "./db/mongodb";
+import { ERROR_MIDDLEWARE } from "./middlewares/error.middleware";
 
-import USERS_ROUTE from "@/routes/users.route";
-import AUTH_ROUTE from "@/routes/auth.route";
+import USERS_ROUTE from "./routes/users.route";
+import AUTH_ROUTE from "./routes/auth.route";
 
-import PRODUCTS_ROUTE from "@/routes/products.route";
-import INVENTORY_ROUTE from "@/routes/inventory.route";
-import CATEGORIES_ROUTE from "@/routes/categories.route";
-import SIZES_ROUTE from "@/routes/sizes.route";
-import COLORS_ROUTE from "@/routes/colors.route";
+import PRODUCTS_ROUTE from "./routes/products.route";
+import INVENTORY_ROUTE from "./routes/inventory.route";
+import CATEGORIES_ROUTE from "./routes/categories.route";
+import SIZES_ROUTE from "./routes/sizes.route";
+import COLORS_ROUTE from "./routes/colors.route";
 
 const app = express();
 

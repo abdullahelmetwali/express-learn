@@ -1,5 +1,5 @@
 import { connect } from "mongoose";
-import { DB_URI } from "@/config/env";
+import { DB_URI } from "../config/env";
 
 export async function CONNECT_TO_DATA_BASE() {
     if (!DB_URI) {
