@@ -1,4 +1,4 @@
-import { makeSlug } from "@/utils/make-slug";
+import { makeSlug } from "../utils/make-slug";
 import { Schema, model } from "mongoose";
 
 const UserSchema = new Schema({

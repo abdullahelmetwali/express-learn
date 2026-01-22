@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { makeSlug } from "@/utils/make-slug";
+import { makeSlug } from "../utils/make-slug";
 
 const ProductSchema = new Schema({
     slug: {

@@ -4,10 +4,10 @@ import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import { startSession } from "mongoose";
 
-import { UserTypo } from "@/types";
-import { JWT_EXPIRES_IN, JWT_SECRET } from "@/config/env";
-import { CustomValidationError } from "@/classes";
-import { USERS_MODEL } from "@/models/users.model";
+import { UserTypo } from "../types";
+import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/env";
+import { CustomValidationError } from "../classes";
+import { USERS_MODEL } from "../models/users.model";
 
 export const signUp = async (req: Request, res: Response, next: NextFunction) => {
     const session = await startSession();

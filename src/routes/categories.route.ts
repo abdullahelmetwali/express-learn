@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import { CATEGORIES_MODEL } from "@/models/categories.model";
-import { createCategory, updateCategory, softDeleteCategory, hardDeleteCategory, restoreCategory } from "@/controllers/categories.controller";
+import { CATEGORIES_MODEL } from "../models/categories.model";
+import { createCategory, updateCategory, softDeleteCategory, hardDeleteCategory, restoreCategory } from "../controllers/categories.controller";
 
 const CATEGORIES_ROUTE = Router();
 

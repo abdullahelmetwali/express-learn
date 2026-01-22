@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import { startSession } from "mongoose";
 
-import { ProductTypo } from "@/types";
-import { CustomValidationError } from "@/classes";
+import { ProductTypo } from "../types";
+import { CustomValidationError } from "../classes";
 
-import { PRODUCTS_MODEL } from "@/models/products.model";
-import { COLORS_MODEL } from "@/models/colors.model";
-import { SIZES_MODEL } from "@/models/sizes.model";
-import { CATEGORIES_MODEL } from "@/models/categories.model";
+import { PRODUCTS_MODEL } from "../models/products.model";
+import { COLORS_MODEL } from "../models/colors.model";
+import { SIZES_MODEL } from "../models/sizes.model";
+import { CATEGORIES_MODEL } from "../models/categories.model";
 
-import { softDeleteUtility } from "@/utils/soft-delete";
-import { hardDeleteUtility } from "@/utils/hard-delete";
-import { restoreUtility } from "@/utils/restore";
+import { softDeleteUtility } from "../utils/soft-delete";
+import { hardDeleteUtility } from "../utils/hard-delete";
+import { restoreUtility } from "../utils/restore";
 
 export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
     const session = await startSession();
