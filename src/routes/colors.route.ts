@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import { AUTH_MIDDLEWARE } from "../middlewares/auth.middleware";
 import { COLORS_MODEL } from "../models/colors.model";
 import {
     createColor,
@@ -30,7 +31,7 @@ COLORS_ROUTE.get("/", async (_, res) => {
 });
 
 // deleted colors
-COLORS_ROUTE.get("/deleted", async (_, res) => {
+COLORS_ROUTE.get("/deleted", AUTH_MIDDLEWARE, async (_, res) => {
     try {
         const colors = await COLORS_MODEL.find({ isDeleted: true }).lean();
         return res.status(200).json({
@@ -47,18 +48,18 @@ COLORS_ROUTE.get("/deleted", async (_, res) => {
 });
 
 // create new color
-COLORS_ROUTE.post("/", createColor);
+COLORS_ROUTE.post("/", AUTH_MIDDLEWARE, createColor);
 
 // update color
-COLORS_ROUTE.put("/:id", updateColor);
+COLORS_ROUTE.put("/:id", AUTH_MIDDLEWARE, updateColor);
 
 // soft delete
-COLORS_ROUTE.delete("/soft/:id", softDeleteColor);
+COLORS_ROUTE.delete("/soft/:id", AUTH_MIDDLEWARE, softDeleteColor);
 
 // hard delete
-COLORS_ROUTE.delete("/hard/:id", hardDeleteColor);
+COLORS_ROUTE.delete("/hard/:id", AUTH_MIDDLEWARE, hardDeleteColor);
 
 // restore color
-COLORS_ROUTE.patch("/restore/:id", restoreColor);
+COLORS_ROUTE.patch("/restore/:id", AUTH_MIDDLEWARE, restoreColor);
 
 export default COLORS_ROUTE;

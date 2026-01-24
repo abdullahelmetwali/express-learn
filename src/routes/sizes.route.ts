@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import { AUTH_MIDDLEWARE } from "../middlewares/auth.middleware";
 import { SIZES_MODEL } from "../models/sizes.model";
 import {
     createSize,
@@ -31,7 +32,7 @@ SIZES_ROUTE.get("/", async (_, res) => {
 });
 
 // deleted sizes
-SIZES_ROUTE.get("/deleted", async (_, res) => {
+SIZES_ROUTE.get("/deleted", AUTH_MIDDLEWARE, async (_, res) => {
     try {
         const sizes = await SIZES_MODEL.find({
             isDeleted: true
@@ -51,18 +52,18 @@ SIZES_ROUTE.get("/deleted", async (_, res) => {
 });
 
 // create new size
-SIZES_ROUTE.post("/", createSize);
+SIZES_ROUTE.post("/", AUTH_MIDDLEWARE, createSize);
 
 // update size
-SIZES_ROUTE.put("/:id", updateSize);
+SIZES_ROUTE.put("/:id", AUTH_MIDDLEWARE, updateSize);
 
 // soft delete
-SIZES_ROUTE.delete("/soft/:id", softDeleteSize);
+SIZES_ROUTE.delete("/soft/:id", AUTH_MIDDLEWARE, softDeleteSize);
 
 // hard delete
-SIZES_ROUTE.delete("/hard/:id", hardDeleteSize);
+SIZES_ROUTE.delete("/hard/:id", AUTH_MIDDLEWARE, hardDeleteSize);
 
 // restore size
-SIZES_ROUTE.patch("/restore/:id", restoreSize);
+SIZES_ROUTE.patch("/restore/:id", AUTH_MIDDLEWARE, restoreSize);
 
 export default SIZES_ROUTE;

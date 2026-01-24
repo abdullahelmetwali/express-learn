@@ -1,8 +1,7 @@
 // controller play as a func to make logic in it
+import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { NextFunction, Request, Response } from "express";
-import { startSession } from "mongoose";
 
 import { UserTypo } from "../types";
 import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/env";
@@ -10,8 +9,6 @@ import { CustomValidationError } from "../classes";
 import { USERS_MODEL } from "../models/users.model";
 
 export const signUp = async (req: Request, res: Response, next: NextFunction) => {
-    const session = await startSession();
-    session.startTransaction();
     try {
         const { email, name, password } = req.body as UserTypo;
 
@@ -25,51 +22,43 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
         };
 
         if (passswordLength) {
-            const err = new CustomValidationError(409, { password: "Password must be more than 12 letters" });
-            throw err;
-        }
+            throw new CustomValidationError(409, { password: "Password must be more than 12 letters" });
+        };
+
         // hash passsword for security
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Create user , here mongoose will also validate (required, minlength, etc.)
         const newUser = await USERS_MODEL.create(
-            [{ name, email, password: hashedPassword }],
-            { session }
+            { name, email, password: hashedPassword }
         );
 
-        if (!newUser[0] || !JWT_SECRET || !JWT_EXPIRES_IN) {
+        if (!newUser || !JWT_SECRET || !JWT_EXPIRES_IN) {
             throw new Error("User creation failed");
         };
 
         const token = jwt.sign(
-            { userId: newUser[0].id },
+            { userId: newUser.id },
             JWT_SECRET,
             // expires in seconds
             { expiresIn: Number(JWT_EXPIRES_IN) || 3600 }
         );
-
-        await session.commitTransaction();
 
         return res.status(201).json({
             success: true,
             message: "User created successfully",
             data: {
                 token,
-                user: newUser[0]
+                user: newUser
             }
         })
     } catch (error) {
-        await session.abortTransaction();
         next(error);
-    } finally {
-        session.endSession();
     }
 };
 
-export const signIn = async (req: Request, res: Response) => {
-    const session = await startSession();
-    session.startTransaction();
+export const signIn = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body as UserTypo;
         const user = await USERS_MODEL.findOne({ email });
@@ -102,9 +91,7 @@ export const signIn = async (req: Request, res: Response) => {
             user
         })
     } catch (error) {
-        await session.abortTransaction();
-    } finally {
-        session.endSession();
+        next(error);
     }
 };
 

@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import { AUTH_MIDDLEWARE } from "../middlewares/auth.middleware";
 import { PRODUCTS_MODEL } from "../models/products.model";
 import {
     createProduct,
@@ -26,7 +27,7 @@ PRODUCTS_ROUTE.get("/", async (_, res) => {
 });
 
 // deleted products
-PRODUCTS_ROUTE.get("/deleted", async (_, res) => {
+PRODUCTS_ROUTE.get("/deleted", AUTH_MIDDLEWARE, async (_, res) => {
     try {
         const products = await PRODUCTS_MODEL.find({ isDeleted: true }).lean();
         return res.json({
@@ -40,18 +41,18 @@ PRODUCTS_ROUTE.get("/deleted", async (_, res) => {
 });
 
 // create product 
-PRODUCTS_ROUTE.post("/", createProduct);
+PRODUCTS_ROUTE.post("/", AUTH_MIDDLEWARE, createProduct);
 
 // update product
-PRODUCTS_ROUTE.put("/:id", updateProduct);
+PRODUCTS_ROUTE.put("/:id", AUTH_MIDDLEWARE, updateProduct);
 
 // soft delete
-PRODUCTS_ROUTE.delete("/:id", softDeleteProduct);
+PRODUCTS_ROUTE.delete("/:id", AUTH_MIDDLEWARE, softDeleteProduct);
 
 // hard delete
-PRODUCTS_ROUTE.delete("/hard/:id", hardDeleteProduct);
+PRODUCTS_ROUTE.delete("/hard/:id", AUTH_MIDDLEWARE, hardDeleteProduct);
 
 // restore category
-PRODUCTS_ROUTE.patch("/restore/:id", restoreProduct);
+PRODUCTS_ROUTE.patch("/restore/:id", AUTH_MIDDLEWARE, restoreProduct);
 
 export default PRODUCTS_ROUTE;

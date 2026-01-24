@@ -1,5 +1,5 @@
-import { USERS_MODEL } from "../models/users.model";
 import { Router } from "express";
+import { USERS_MODEL } from "../models/users.model";
 
 const USERS_ROUTE = Router();
 

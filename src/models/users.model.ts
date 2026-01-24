@@ -24,6 +24,13 @@ const UserSchema = new Schema({
         minLength: 8,
         maxLength: 255,
     },
+    phone: {
+        type: String,
+        required: [true, "Phone number is required"],
+        trim: true,
+        minLength: 8,
+        maxLength: 11,
+    },
     password: {
         type: String,
         trim: true,
@@ -38,6 +45,12 @@ const UserSchema = new Schema({
     cart: {
         type: [],
         default: []
+    },
+    role: {
+        type: String,
+        required: [true, "User role is required"],
+        enum: ["admin", "customer"],
+        default: "customer"
     }
 }, {
     timestamps: true,

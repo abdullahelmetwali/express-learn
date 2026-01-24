@@ -8,6 +8,7 @@ export interface UserTypo {
     email: string;
     password: string;
     gender: "male" | "female";
+    role: "admin" | "customer"
 };
 
 export interface ProductTypo {
