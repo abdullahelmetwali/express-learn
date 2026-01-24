@@ -24,7 +24,7 @@ export const filterProucts = async (req: Request, res: Response, next: NextFunct
         if (status) filter.status = status;
 
         const products = await PRODUCTS_MODEL.find(filter).lean();
-        return res.status(200).json({ ...products });
+        return res.status(200).json({ data: products });
     } catch (error) {
         next(error);
     }

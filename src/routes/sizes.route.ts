@@ -19,7 +19,7 @@ SIZES_ROUTE.get("/", async (_, res) => {
             isDeleted: false
         }).lean();
 
-        return res.status(200).json({ ...sizes });
+        return res.status(200).json({ data: sizes });
     } catch (error: Error | any) {
         res.status(500).json({
             success: false,
