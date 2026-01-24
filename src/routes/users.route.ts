@@ -11,10 +11,7 @@ USERS_ROUTE.get("/", async (_, res) => {
         // .lean() -> plain JS objects
         const users = await USERS_MODEL.find({}, { password: 0 }).lean();
 
-        res.json({
-            success: true,
-            data: users,
-        });
+        return res.status(200).json({ users });
     } catch (error: Error | any) {
         res.status(500).json({
             success: false,

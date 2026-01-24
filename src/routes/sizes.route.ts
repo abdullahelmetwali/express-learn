@@ -18,11 +18,8 @@ SIZES_ROUTE.get("/", async (_, res) => {
         const sizes = await SIZES_MODEL.find({
             isDeleted: false
         }).lean();
-        return res.status(200).json({
-            data: [
-                ...sizes
-            ],
-        })
+
+        return res.status(200).json({ sizes });
     } catch (error: Error | any) {
         res.status(500).json({
             success: false,
