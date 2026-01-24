@@ -17,7 +17,7 @@ COLORS_ROUTE.get("/", async (_, res) => {
     try {
         // const colors = await COLORS_MODEL.db.dropDatabase();
         const colors = await COLORS_MODEL.find({ isDeleted: false }).lean();
-        return res.status(200).json({ colors });
+        return res.status(200).json({ ...colors });
     } catch (error: Error | any) {
         res.status(500).json({
             success: false,

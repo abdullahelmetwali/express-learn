@@ -16,7 +16,7 @@ const CATEGORIES_ROUTE = Router();
 CATEGORIES_ROUTE.get("/", async (_, res) => {
     try {
         const categories = await CATEGORIES_MODEL.find({ isDeleted: false }).lean();
-        return res.status(200).json({ categories });
+        return res.status(200).json({ ...categories });
     } catch (error: Error | any) {
         return res.status(500).json({
             error: error?.message
