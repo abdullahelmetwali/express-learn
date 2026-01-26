@@ -1,5 +1,7 @@
-import { Router } from "express";
+import { Router, Response, Request } from "express";
 import { USERS_MODEL } from "../models/users.model";
+import { AUTH_MIDDLEWARE } from "../middlewares/auth.middleware";
+import { GET_USER } from "@/utils/get-user";
 
 const USERS_ROUTE = Router();
 
@@ -12,6 +14,32 @@ USERS_ROUTE.get("/", async (_, res) => {
         const users = await USERS_MODEL.find({}, { password: 0 }).lean();
 
         return res.status(200).json({ data: users });
+    } catch (error: Error | any) {
+        res.status(500).json({
+            error: error.message,
+        });
+    }
+});
+
+// admin
+USERS_ROUTE.get("/dashboard", async (req: Request, res: Response) => {
+    try {
+        const user = await GET_USER(req);
+        if (user instanceof Error) throw new Error(user?.message);
+        return res.status(200).json({ data: user });
+    } catch (error: Error | any) {
+        res.status(500).json({
+            error: error.message,
+        });
+    }
+});
+
+// user
+USERS_ROUTE.get("/profile", async (req: Request, res: Response) => {
+    try {
+        const user = await GET_USER(req);
+        if (user instanceof Error) throw new Error(user?.message);
+        return res.status(200).json({ data: user });
     } catch (error: Error | any) {
         res.status(500).json({
             error: error.message,

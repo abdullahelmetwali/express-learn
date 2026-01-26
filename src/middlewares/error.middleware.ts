@@ -43,7 +43,8 @@ export function ERROR_MIDDLEWARE(
 
             // make every error key to his error value
             Object.keys(err.errors).forEach((key) => {
-                errors![key] = err.errors[key].message;
+                const message = err.errors[key].message.replace(/Path\s*`[^`]*`/g, "").trim();
+                errors![key] = message;
             });
         }
 
@@ -76,10 +77,9 @@ export function ERROR_MIDDLEWARE(
         }
 
         res.status(statusCode).json(response);
-    } catch (error) {
-        // Fallback error response
+    } catch (error: Error | any) {
         res.status(500).json({
-            message: "Internal server error",
+            message: error?.message || "Internal server error",
         });
     }
 }

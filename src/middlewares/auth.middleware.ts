@@ -24,9 +24,9 @@ export async function AUTH_MIDDLEWARE(
 
         next();
 
-    } catch (error) {
+    } catch (error: Error | any) {
         return res.status(500).json({
-            message: "Internal server error"
+            message: error?.message || "Internal server error in authentication"
         });
     }
 };

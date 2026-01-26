@@ -10,15 +10,17 @@ import { USERS_MODEL } from "../models/users.model";
 
 export const signUp = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { email, name, password, phone, role } = req.body as UserTypo;
+        const { email, name, password, phone, role, gender } = req.body as UserTypo;
 
         // check if user exists , to avoid making the whole logic
-        const isExisting = await USERS_MODEL.findOne({ email });
+        const isExisting = await USERS_MODEL.findOne({ email, phone });
         const passswordLength = password.length < 12;
 
         let errors: Record<string, string> = {};
 
-        if (isExisting?.email) errors.email = "Email is already token";
+        if (isExisting?.email) errors.email = "Email is already token before";
+        if (isExisting?.phone) errors.phone = "Phone is already token before";
+        if (!gender) errors.gender = "Please select your gender";
         if (passswordLength) errors.password = "Password must be more than 12 letters";
 
         if (Object.keys(errors).length > 0) {
@@ -42,7 +44,7 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
         };
 
         const token = jwt.sign(
-            { userId: newUser.id },
+            { userId: newUser.id, role: role },
             JWT_SECRET,
             // expires in seconds
             { expiresIn: Number(JWT_EXPIRES_IN) || 3600 }
@@ -52,7 +54,6 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
         delete (userObject as any).password;
 
         return res.status(201).json({
-            message: "User created successfully",
             data: {
                 token,
                 user: userObject
@@ -69,15 +70,17 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
         const { email, password } = req.body as UserTypo;
         const user = await USERS_MODEL.findOne({ email });
 
+        let errors: Record<string, string> = {};
+
         if (!user) {
-            const err = new CustomValidationError(404, { email: "No email with this data" });
-            throw err;
+            errors.message = "Invalid email or password";
+            throw new CustomValidationError(409, errors);
         };
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            const err = new CustomValidationError(400, { password: "Incorrect password" });
-            throw err;
+            errors.message = "Invalid email or password";
+            throw new CustomValidationError(409, errors);
         };
 
         if (!JWT_SECRET) {
@@ -87,14 +90,16 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
         };
 
         const token = jwt.sign(
-            { userId: user._id },
+            { userId: user._id, role: user.role },
             JWT_SECRET,
             { expiresIn: Number(JWT_EXPIRES_IN) || 3600 }
         );
 
         return res.status(200).json({
-            token,
-            user
+            data: {
+                token,
+                user
+            }
         })
     } catch (error) {
         next(error);

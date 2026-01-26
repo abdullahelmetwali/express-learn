@@ -33,8 +33,9 @@ export const filterProucts = async (req: Request, res: Response, next: NextFunct
 
 export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
     const session = await startSession();
-    session.startTransaction();
     try {
+        session.startTransaction();
+
         const { name, colors, sizes, categories, status } = req.body as Product;
 
         const [anotherProduct, hasColors, hasSizes, hasCategories] = await Promise.all([
@@ -85,7 +86,9 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
         await session.commitTransaction();
 
         return res.status(201).json({
-            ...newProduct[0].toObject(),
+            data: {
+                ...newProduct[0].toObject(),
+            }
         });
     } catch (error) {
         if (session.inTransaction()) {
@@ -99,8 +102,8 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
 
 export const updateProduct = async (req: Request, res: Response, next: NextFunction) => {
     const session = await startSession();
-    session.startTransaction();
     try {
+        session.startTransaction();
         const { id } = req.params;
         const { name, colors, sizes, categories, status } = req.body as Product;
 
@@ -153,7 +156,11 @@ export const updateProduct = async (req: Request, res: Response, next: NextFunct
         await thisProduct.save();
         await session.commitTransaction();
 
-        return res.status(201).json(thisProduct.toObject());
+        return res.status(201).json({
+            data: {
+                ...thisProduct
+            }
+        });
     } catch (error) {
         if (session.inTransaction()) {
             await session.abortTransaction();

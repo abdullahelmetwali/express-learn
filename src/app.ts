@@ -26,10 +26,9 @@ app.use(cookieParser());
 // CORS
 app.use(
     cors({
-        origin: true,
+        origin: ["http://localhost:3000", "https://black-wolf-store.vercel.app/"],
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-        allowedHeaders: ["Content-Type", "Authorization"],
-        credentials: true
+        allowedHeaders: ["Authorization", "Content-Type"],
     })
 );
 
